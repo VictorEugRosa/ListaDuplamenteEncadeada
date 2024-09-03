@@ -1,0 +1,115 @@
+class ListaDuplamenteEncadeada {
+
+    class No {
+        int dado;
+        No anterior;
+        No proximo;
+
+        No(int dado) {
+            this.dado = dado;
+        }
+    }
+
+    private No cabeca;
+    private No cauda;
+
+    public void adicionarNoFinal(int dado) {
+        No novoNo = new No(dado);
+        if (cabeca == null) {
+            cabeca = cauda = novoNo;
+            cabeca.anterior = null;
+            cauda.proximo = null;
+        } else {
+            cauda.proximo = novoNo;
+            novoNo.anterior = cauda;
+            cauda = novoNo;
+            cauda.proximo = null;
+        }
+    }
+
+    public void adicionarNoInicio(int dado) {
+        No novoNo = new No(dado);
+        if (cabeca == null) {
+            cabeca = cauda = novoNo;
+            cabeca.anterior = null;
+            cauda.proximo = null;
+        } else {
+            cabeca.anterior = novoNo;
+            novoNo.proximo = cabeca;
+            cabeca = novoNo;
+            cabeca.anterior = null;
+        }
+    }
+
+    public void removerNo(int chave) {
+        if (cabeca == null) {
+            return;
+        }
+
+        No atual = cabeca;
+        while (atual != null && atual.dado != chave) {
+            atual = atual.proximo;
+        }
+
+        if (atual == null) {
+            return; 
+        }
+
+        if (atual == cabeca) {
+            cabeca = atual.proximo;
+        }
+
+        if (atual == cauda) {
+            cauda = atual.anterior;
+        }
+
+        if (atual.anterior != null) {
+            atual.anterior.proximo = atual.proximo;
+        }
+
+        if (atual.proximo != null) {
+            atual.proximo.anterior = atual.anterior;
+        }
+    }
+
+    public void imprimirLista() {
+        No atual = cabeca;
+        while (atual != null) {
+            System.out.print(atual.dado + " ");
+            atual = atual.proximo;
+        }
+        System.out.println();
+    }
+
+    public void imprimirListaReversa() {
+        No atual = cauda;
+        while (atual != null) {
+            System.out.print(atual.dado + " ");
+            atual = atual.anterior;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        ListaDuplamenteEncadeada lista = new ListaDuplamenteEncadeada();
+
+        lista.adicionarNoFinal(10);
+        lista.adicionarNoFinal(20);
+        lista.adicionarNoFinal(30);
+
+        System.out.println("Lista em ordem normal:");
+        lista.imprimirLista(); 
+
+        lista.adicionarNoInicio(5);
+        System.out.println("Lista após adicionar no início:");
+        lista.imprimirLista(); 
+
+        lista.removerNo(20);
+        System.out.println("Lista após remover o nó com valor 20:");
+        lista.imprimirLista(); 
+
+        System.out.println("Lista em ordem reversa:");
+        lista.imprimirListaReversa(); 
+    }
+}
+
